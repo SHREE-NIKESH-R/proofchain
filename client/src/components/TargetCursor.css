@@ -1,0 +1,83 @@
+.target-cursor-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  transform: translate(-50%, -50%);
+}
+
+.target-cursor-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.target-cursor-corner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border: 3px solid;
+  will-change: transform;
+}
+
+.corner-tl {
+  transform: translate(-150%, -150%);
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.corner-tr {
+  transform: translate(50%, -150%);
+  border-bottom: 0;
+  border-left: 0;
+}
+
+.corner-br {
+  transform: translate(50%, 50%);
+  border-top: 0;
+  border-left: 0;
+}
+
+.corner-bl {
+  transform: translate(-150%, 50%);
+  border-top: 0;
+  border-right: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .target-cursor-enabled,
+  .target-cursor-enabled body,
+  .target-cursor-enabled a,
+  .target-cursor-enabled button,
+  .target-cursor-enabled [role="button"],
+  .target-cursor-enabled summary,
+  .target-cursor-enabled .cursor-target,
+  .target-cursor-enabled input[type="checkbox"],
+  .target-cursor-enabled input[type="radio"],
+  .target-cursor-enabled input[type="range"],
+  .target-cursor-enabled input[type="file"],
+  .target-cursor-enabled select {
+    cursor: none !important;
+  }
+
+  .target-cursor-enabled input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  .target-cursor-enabled textarea {
+    cursor: text !important;
+  }
+}
+
+@media (hover: none), (pointer: coarse), print {
+  .target-cursor-wrapper {
+    display: none;
+  }
+}

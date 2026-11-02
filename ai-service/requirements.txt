@@ -1,0 +1,34 @@
+# Web framework
+fastapi==0.141.1
+uvicorn==0.52.4
+pydantic==2.13.4
+pydantic-settings==2.15.0
+python-multipart==0.0.32
+python-dotenv==1.2.3
+
+# Database (embeddings collection lives in the same MongoDB the Node backend uses)
+pymongo==4.17.0
+
+# Text embeddings
+sentence-transformers==3.0.1
+# NOTE: installs torch as a dependency. On a fresh machine, prefer the CPU-only wheel
+# to avoid pulling multi-GB CUDA packages you don't need (no GPU is required or assumed):
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements.txt
+numpy>=1.26
+
+# Image: perceptual hashing + lightweight embeddings
+Pillow==12.3.0
+imagehash==4.3.2
+
+# Audio: feature extraction (MFCC, chroma, tempo) — CPU only, no external model download
+librosa==1.0.0
+soundfile==0.14.0
+
+# Video: frame extraction (headless — no GUI deps, smaller install)
+opencv-python-headless==5.0.0.93
+
+# Testing
+pytest==9.1.1
+httpx==0.28.1
+mongomock==4.3.0

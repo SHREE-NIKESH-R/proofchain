@@ -1,0 +1,868 @@
+[{
+  "_id": {
+    "$oid": "6a8fdb0a5b69dafd344fe897"
+  },
+  "assetId": "0xea9c1115e3bb888d471596bfdf49a439e8226f52e827dc9b21cc1e0637d39a4e",
+  "userId": {
+    "$oid": "6a8fd954d5aa28034629ef2b"
+  },
+  "title": "AI in Education",
+  "description": "",
+  "contentType": "article",
+  "textContent": "Artificial intelligence is transforming education by providing personalized learning experiences for students.",
+  "fileUrl": null,
+  "contentHash": "0xd3d0f35c3b3d9b190e02365a6ce1bddc54dd98bc8c12600074b18781da8478c0",
+  "ownerWallet": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+  "blockchainTxHash": "0xc7af4f19a98fd33050a9603dcdc1f51dfaeb00ca8932078d0df1c6d38d20f848",
+  "registeredAt": {
+    "$date": "2026-08-27T06:36:53.000Z"
+  },
+  "aiModel": "Human-created / Unknown",
+  "version": 1,
+  "status": "active",
+  "originalityAnalysis": null,
+  "evidenceScore": null,
+  "createdAt": {
+    "$date": "2026-08-27T06:36:58.598Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-27T06:36:58.598Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8ff99a7db98d90f1777e2d"
+  },
+  "assetId": "0xa67eb19b10153079453d30d9a6ee388666afd247b572a1deaabe73cb31cda502",
+  "userId": {
+    "$oid": "6a8fd954d5aa28034629ef2b"
+  },
+  "title": "AI and Student Learning",
+  "description": "",
+  "contentType": "article",
+  "textContent": "Artificial intelligence is changing the way students learn by enabling more personalized educational experiences.",
+  "fileUrl": null,
+  "contentHash": "0x631486d0a63e0e1f951b550c4548ea0e551fbd07fdfe0dd49fb19e577ff098fa",
+  "ownerWallet": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+  "blockchainTxHash": "0xd1ad3717634a3f4ffba815e8bc2b00852083cfda5509e76d29a7ebb1f7757ff8",
+  "registeredAt": {
+    "$date": "2026-08-27T08:47:14.000Z"
+  },
+  "aiModel": "Human-created / Unknown",
+  "version": 1,
+  "status": "transferred",
+  "originalityAnalysis": {
+    "similarityScore": 0.9315,
+    "matchedAssets": [
+      {
+        "assetId": "0x9edb6b8aef77c75668d0804fcf74de5fecbd175eccbe9944bc018075ef22c656",
+        "similarityScore": 0.9315
+      }
+    ],
+    "analysisMethod": "Semantic Embedding",
+    "confidence": "low",
+    "warning": "Possible Derivative Work"
+  },
+  "evidenceScore": 71,
+  "evidenceScoreBreakdown": {
+    "score": 71,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 0.0685,
+        "label": "Weak",
+        "detail": "93.2% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (2 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 0.6,
+        "label": "Not Available",
+        "detail": "No specific AI model declared"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-08-27T08:47:22.036Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-27T08:55:12.782Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a95460a409160728139d5a2"
+  },
+  "assetId": "0x5221d02dc8750728075d0c75b36f9018a05fb21904bed699027dc1824f396856",
+  "userId": {
+    "$oid": "6a8fd954d5aa28034629ef2b"
+  },
+  "title": "test1",
+  "description": "",
+  "contentType": "image",
+  "textContent": null,
+  "fileUrl": "/uploads/1788167690472-4cda610a9f712054.jpg",
+  "contentHash": "0xd94fe14162584f358a33b13e16cf8fe00bbe994d1d84b1ea12696acf9bdf9206",
+  "ownerWallet": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+  "blockchainTxHash": "0xf9ec4a0c53849662cee2ed0a311c2767957f40c97d3f664085a3eb32a368e30d",
+  "registeredAt": {
+    "$date": "2026-08-31T09:14:43.000Z"
+  },
+  "aiModel": "Gemini",
+  "version": 1,
+  "status": "transferred",
+  "originalityAnalysis": {
+    "similarityScore": 0,
+    "matchedAssets": [],
+    "analysisMethod": "Perceptual Hash",
+    "confidence": "low",
+    "warning": null
+  },
+  "evidenceScore": 100,
+  "evidenceScoreBreakdown": {
+    "score": 100,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "0.0% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (2 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 1,
+        "label": "Available",
+        "detail": "Declared model: Gemini"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-08-31T09:14:50.490Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-31T10:34:08.625Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a955e33706e873484b68408"
+  },
+  "assetId": "0x557b6da8f77e528d92db865c48cc6b3f45cd1da4620a1056da7e69bb6f67cc97",
+  "userId": {
+    "$oid": "6a8fd954d5aa28034629ef2b"
+  },
+  "title": "image 2",
+  "description": "",
+  "contentType": "image",
+  "textContent": null,
+  "fileUrl": "/uploads/1788173875160-7049a0508b0e535c.jpg",
+  "contentHash": "0x299cc102d0dfa7123f815f0424578bba2f94d34b6a248390f68ee51115366e2a",
+  "ownerWallet": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+  "blockchainTxHash": "0x55a49473ca9ec66b095f1f7a1fd563d7de3070aa635f7f8d900c7302243653d0",
+  "registeredAt": {
+    "$date": "2026-08-31T10:57:47.000Z"
+  },
+  "aiModel": "Human-created / Unknown",
+  "version": 1,
+  "status": "active",
+  "originalityAnalysis": {
+    "similarityScore": 0.6875,
+    "matchedAssets": [
+      {
+        "assetId": "0x5221d02dc8750728075d0c75b36f9018a05fb21904bed699027dc1824f396856",
+        "similarityScore": 0.6875
+      }
+    ],
+    "analysisMethod": "Perceptual Hash",
+    "confidence": "low",
+    "warning": null
+  },
+  "evidenceScore": 77,
+  "evidenceScoreBreakdown": {
+    "score": 77,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 0.3125,
+        "label": "Moderate",
+        "detail": "68.8% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (1 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 0.6,
+        "label": "Not Available",
+        "detail": "No specific AI model declared"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-08-31T10:57:55.165Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-31T10:57:55.254Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a96aa027a8c23f0fcbcaf57"
+  },
+  "assetId": "0x2c5b516d1ba32e028a565c15be238754f945af49eadaf8856be8fad95c46e07d",
+  "userId": {
+    "$oid": "6a8fd954d5aa28034629ef2b"
+  },
+  "title": "music 1",
+  "description": "",
+  "contentType": "music",
+  "textContent": null,
+  "fileUrl": "/uploads/1788258818311-4af02e0c7e8c90a0.mp3",
+  "contentHash": "0x5e46a3a1c0ee589002b305dd9c4b5db9351910c3d238c8cd6fd0b8410a867b58",
+  "ownerWallet": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+  "blockchainTxHash": "0xd3a6eaae153117fc1a90696ecd901a1233707cb6ae7adf7c1c36d85963281595",
+  "registeredAt": {
+    "$date": "2026-09-01T10:33:33.000Z"
+  },
+  "aiModel": "Human-created / Unknown",
+  "version": 1,
+  "status": "active",
+  "originalityAnalysis": {
+    "similarityScore": 1,
+    "matchedAssets": [
+      {
+        "assetId": "0xa03120a001ef027a6e22396042bc8e6d55143232994b518a1ee7df4fc0e398ea",
+        "similarityScore": 1
+      },
+      {
+        "assetId": "0x00721e772ac48d2919164d31dbead5c711e6ae360253c8795686c5a4cb631003",
+        "similarityScore": 0.6347
+      }
+    ],
+    "analysisMethod": "Audio Fingerprint (MFCC/Chroma/Tempo)",
+    "confidence": "low",
+    "warning": "Possible Derivative Work"
+  },
+  "evidenceScore": 69,
+  "evidenceScoreBreakdown": {
+    "score": 69,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 0,
+        "label": "Weak",
+        "detail": "100.0% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (1 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 0.6,
+        "label": "Not Available",
+        "detail": "No specific AI model declared"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-09-01T10:33:38.316Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-01T10:33:41.427Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a96b00b7a8c23f0fcbcaf58"
+  },
+  "assetId": "0x773c77e6bc2de1bcbc3d1712be0a66ecd47ebd1a78e22a4b2672cfe6540f9dda",
+  "userId": {
+    "$oid": "6a8fd954d5aa28034629ef2b"
+  },
+  "title": "video 1",
+  "description": "",
+  "contentType": "video",
+  "textContent": null,
+  "fileUrl": "/uploads/1788260363798-aa68b1b119cb9f1e.mp4",
+  "contentHash": "0x1453e97ef30f256383a3f16603126fdffbd733005f18a8687ecbfa21612445ca",
+  "ownerWallet": "0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199",
+  "blockchainTxHash": "0x37126f43f102ff83c05c896d984a95dbfb1bedf64e36f1d52bb0b74ed728f810",
+  "registeredAt": {
+    "$date": "2026-09-01T10:59:18.000Z"
+  },
+  "aiModel": "Other",
+  "version": 1,
+  "status": "transferred",
+  "originalityAnalysis": {
+    "similarityScore": 0,
+    "matchedAssets": [],
+    "analysisMethod": "Video Frame Sampling + Perceptual Hash",
+    "confidence": "low",
+    "warning": null
+  },
+  "evidenceScore": 100,
+  "evidenceScoreBreakdown": {
+    "score": 100,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "0.0% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (2 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 1,
+        "label": "Available",
+        "detail": "Declared model: Other"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-09-01T10:59:23.804Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-01T11:04:47.230Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ab4bf851cceac6c6773529f"
+  },
+  "assetId": "0x61b5c3799a6a12a24a52248da1a1d5efc26ca84c8a30966be999ba84ee4d99bb",
+  "userId": {
+    "$oid": "6a8fd954d5aa28034629ef2b"
+  },
+  "title": "name",
+  "description": "",
+  "contentType": "article",
+  "textContent": "shree nikesh",
+  "fileUrl": null,
+  "contentHash": "0x5c03ec5a56694badb9951a28620267ff3baaf8c1f2708ba7db6b650c764dc01f",
+  "ownerWallet": "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
+  "blockchainTxHash": "0xf8d818a6ad551baf47f5706be929ff6c9aab98716a09298795da9eff2e077221",
+  "registeredAt": {
+    "$date": "2026-09-24T06:13:19.000Z"
+  },
+  "aiModel": "Human-created / Unknown",
+  "version": 1,
+  "status": "transferred",
+  "originalityAnalysis": {
+    "similarityScore": 0,
+    "matchedAssets": [
+      {
+        "assetId": "0x9edb6b8aef77c75668d0804fcf74de5fecbd175eccbe9944bc018075ef22c656",
+        "similarityScore": 0
+      },
+      {
+        "assetId": "0xa67eb19b10153079453d30d9a6ee388666afd247b572a1deaabe73cb31cda502",
+        "similarityScore": 0
+      }
+    ],
+    "analysisMethod": "Semantic Embedding",
+    "confidence": "low",
+    "warning": null
+  },
+  "evidenceScore": 94,
+  "evidenceScoreBreakdown": {
+    "score": 94,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "0.0% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (2 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 0.6,
+        "label": "Not Available",
+        "detail": "No specific AI model declared"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-09-24T06:13:25.377Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-24T06:17:42.912Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ab5ff458d15b48e556e3957"
+  },
+  "assetId": "0x02306acd1007fcdb0504b3c2f6bd4e240817f393c1ffbcd7aefefde3e44493a3",
+  "userId": {
+    "$oid": "6ab5fb8f67c5cc70fb8e53a4"
+  },
+  "title": "Sustainable Cities 2035",
+  "description": "",
+  "contentType": "article",
+  "textContent": "The Future of Sustainable Cities\nSustainable cities use technology and thoughtful urban planning to reduce pollution, improve transportation, and make better use of energy. Smart public transport, renewable energy, green buildings, and efficient waste management can help cities become cleaner and more comfortable for their residents. Artificial intelligence can also analyze traffic, energy consumption, and environmental data to support better decisions.",
+  "fileUrl": null,
+  "contentHash": "0xbaf24186b38236cf505b55d857f0fa1c3d0762ca40a4d514c495f567b718790b",
+  "ownerWallet": "0x90f79bf6eb2c4f870365e785982e1f101e93b906",
+  "blockchainTxHash": "0x469e89f7c7aa9fcccc5d81805fcf1f43853a5fdfccea5a38a395375ac98a6b21",
+  "registeredAt": {
+    "$date": "2026-09-25T04:57:37.000Z"
+  },
+  "aiModel": "ChatGPT",
+  "version": 1,
+  "status": "active",
+  "originalityAnalysis": {
+    "similarityScore": 0.3661,
+    "matchedAssets": [
+      {
+        "assetId": "0x9edb6b8aef77c75668d0804fcf74de5fecbd175eccbe9944bc018075ef22c656",
+        "similarityScore": 0.3661
+      },
+      {
+        "assetId": "0xa67eb19b10153079453d30d9a6ee388666afd247b572a1deaabe73cb31cda502",
+        "similarityScore": 0.3595
+      },
+      {
+        "assetId": "0x61b5c3799a6a12a24a52248da1a1d5efc26ca84c8a30966be999ba84ee4d99bb",
+        "similarityScore": 0
+      }
+    ],
+    "analysisMethod": "Semantic Embedding",
+    "confidence": "low",
+    "warning": null
+  },
+  "evidenceScore": 91,
+  "evidenceScoreBreakdown": {
+    "score": 91,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 0.6339,
+        "label": "Strong",
+        "detail": "36.6% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (1 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 1,
+        "label": "Available",
+        "detail": "Declared model: ChatGPT"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-09-25T04:57:41.551Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-25T04:58:37.497Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ab609a2d77562c127a126d3"
+  },
+  "assetId": "0x0be4a54d025e9d8a66893948d56062f04c874b0251aa3630a1ce066f7a4ca89b",
+  "userId": {
+    "$oid": "6ab5fb8f67c5cc70fb8e53a4"
+  },
+  "title": "ai music 1",
+  "description": "",
+  "contentType": "music",
+  "textContent": null,
+  "fileUrl": "/uploads/1790314914202-982b1031a764cef6.mp3",
+  "contentHash": "0x151496f5bc7a1eb8a76fc48a8712a356c2b3a5dc6599b11b0881c823e81807d2",
+  "ownerWallet": "0x90f79bf6eb2c4f870365e785982e1f101e93b906",
+  "blockchainTxHash": "0x395e7c2dce045caa9ca3362941facc403f2735cce62e250087882840e8170297",
+  "registeredAt": {
+    "$date": "2026-09-25T05:41:53.000Z"
+  },
+  "aiModel": "Other",
+  "version": 1,
+  "status": "active",
+  "originalityAnalysis": {
+    "similarityScore": 0.9843,
+    "matchedAssets": [
+      {
+        "assetId": "0xa03120a001ef027a6e22396042bc8e6d55143232994b518a1ee7df4fc0e398ea",
+        "similarityScore": 0.9843
+      },
+      {
+        "assetId": "0x2c5b516d1ba32e028a565c15be238754f945af49eadaf8856be8fad95c46e07d",
+        "similarityScore": 0.9843
+      },
+      {
+        "assetId": "0x00721e772ac48d2919164d31dbead5c711e6ae360253c8795686c5a4cb631003",
+        "similarityScore": 0.6181
+      }
+    ],
+    "analysisMethod": "Audio Fingerprint (MFCC/Chroma/Tempo)",
+    "confidence": "low",
+    "warning": "Possible Derivative Work"
+  },
+  "evidenceScore": 75,
+  "evidenceScoreBreakdown": {
+    "score": 75,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 0.015700000000000047,
+        "label": "Weak",
+        "detail": "98.4% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (1 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 1,
+        "label": "Available",
+        "detail": "Declared model: Other"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-09-25T05:41:54.215Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-25T05:42:03.156Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ab612f85404c4ed39ef229a"
+  },
+  "assetId": "0xc351c7026d359ceb1d3523abf9fff56d22cd66dbf4321db148de068a2b97de2f",
+  "userId": {
+    "$oid": "6ab5fb8f67c5cc70fb8e53a4"
+  },
+  "title": "pepsi",
+  "description": "",
+  "contentType": "image",
+  "textContent": null,
+  "fileUrl": "/uploads/1790317304972-25bef1e6044c013e.jpeg",
+  "contentHash": "0x956caafabcd5c094406099615bb1f7020d1404527b9f06b8ae352c106b543ead",
+  "ownerWallet": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+  "blockchainTxHash": "0x9d6df6167efaa4470ef4c2e9159e6214db88ef9aa8e06ccb5ce341273a3fdfa3",
+  "registeredAt": {
+    "$date": "2026-09-25T06:21:43.000Z"
+  },
+  "aiModel": "Human-created / Unknown",
+  "version": 1,
+  "status": "transferred",
+  "originalityAnalysis": {
+    "similarityScore": 0.5625,
+    "matchedAssets": [
+      {
+        "assetId": "0x5221d02dc8750728075d0c75b36f9018a05fb21904bed699027dc1824f396856",
+        "similarityScore": 0.5625
+      },
+      {
+        "assetId": "0x557b6da8f77e528d92db865c48cc6b3f45cd1da4620a1056da7e69bb6f67cc97",
+        "similarityScore": 0.4375
+      }
+    ],
+    "analysisMethod": "Perceptual Hash",
+    "confidence": "low",
+    "warning": null
+  },
+  "evidenceScore": 80,
+  "evidenceScoreBreakdown": {
+    "score": 80,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 0.4375,
+        "label": "Moderate",
+        "detail": "56.3% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (2 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 0.6,
+        "label": "Not Available",
+        "detail": "No specific AI model declared"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-09-25T06:21:44.986Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-25T06:37:51.757Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ab74fe82a166a2298cea56d"
+  },
+  "assetId": "0xc25ad656583b6329a2db49c2104d1ca145fb803205ef1a875e17c1251e77c4bb",
+  "userId": {
+    "$oid": "6ab5fb8f67c5cc70fb8e53a4"
+  },
+  "title": "BR",
+  "description": "",
+  "contentType": "image",
+  "textContent": null,
+  "fileUrl": "/uploads/1790398440138-5613b666d11d6f0d.jpeg",
+  "contentHash": "0xca10c03a08ec7c6f5b197b816569d1698c5e4713365d92cb1443685bab5230d3",
+  "ownerWallet": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+  "blockchainTxHash": "0xbced606c58655bd021eba41c5c1e6eec9be44133ef501075d9593a7ea3aef4d4",
+  "registeredAt": {
+    "$date": "2026-09-26T04:53:54.000Z"
+  },
+  "aiModel": "Human-created / Unknown",
+  "version": 1,
+  "status": "transferred",
+  "originalityAnalysis": {
+    "similarityScore": 0.5625,
+    "matchedAssets": [
+      {
+        "assetId": "0x557b6da8f77e528d92db865c48cc6b3f45cd1da4620a1056da7e69bb6f67cc97",
+        "similarityScore": 0.5625
+      },
+      {
+        "assetId": "0x5221d02dc8750728075d0c75b36f9018a05fb21904bed699027dc1824f396856",
+        "similarityScore": 0.4375
+      },
+      {
+        "assetId": "0xc351c7026d359ceb1d3523abf9fff56d22cd66dbf4321db148de068a2b97de2f",
+        "similarityScore": 0.4062
+      }
+    ],
+    "analysisMethod": "Perceptual Hash",
+    "confidence": "low",
+    "warning": null
+  },
+  "evidenceScore": 80,
+  "evidenceScoreBreakdown": {
+    "score": 80,
+    "factors": {
+      "registrationHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Blockchain registration confirmed and hash-matched"
+      },
+      "ownershipProof": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Stored owner matches current on-chain owner"
+      },
+      "similarity": {
+        "subscore": 0.4375,
+        "label": "Moderate",
+        "detail": "56.3% similarity to closest registered match"
+      },
+      "versionHistory": {
+        "subscore": 1,
+        "label": "Strong",
+        "detail": "Ownership history consistent (2 entries, on-chain-verified)"
+      },
+      "aiModelMetadata": {
+        "subscore": 0.6,
+        "label": "Not Available",
+        "detail": "No specific AI model declared"
+      }
+    },
+    "weights": {
+      "registrationHistory": 0.25,
+      "ownershipProof": 0.2,
+      "similarity": 0.25,
+      "versionHistory": 0.15,
+      "aiModelMetadata": 0.15
+    },
+    "disclaimer": "This is a technical evidence indicator based on blockchain and similarity data, not a legal determination of originality or copyright ownership."
+  },
+  "createdAt": {
+    "$date": "2026-09-26T04:54:00.152Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-26T04:56:22.586Z"
+  },
+  "__v": 0
+}]
