@@ -7,6 +7,30 @@ This guide takes you from a fresh Windows machine to running ProofChain using th
 
 Follow the one-time setup once per machine. After that, use the short start/stop steps whenever you work on the app.
 
+## What is and is not on GitHub
+
+The public GitHub repository contains the application source, dependency manifests, launcher scripts, environment **templates**, and the 11-record asset **metadata** fixture. After cloning, the database seed command recreates those 11 metadata records in the local MongoDB database.
+
+It does **not** contain:
+
+- The original MongoDB database, user accounts, passwords, profiles, or ownership history. The seed fixture contains assets only; create a new local account on each machine.
+- Actual `.env` files or secret values. Create local `.env` files from the tracked `.env.example` templates as described below.
+- The original uploaded media files. The asset metadata can be seeded, but images, music, and video will not load unless their original files are restored separately into `server\uploads`.
+
+The asset export references these seven media filenames, which must be restored with their exact names for those file-backed assets to work:
+
+```text
+1788167690472-4cda610a9f712054.jpg
+1788173875160-7049a0508b0e535c.jpg
+1788258818311-4af02e0c7e8c90a0.mp3
+1788260363798-aa68b1b119cb9f1e.mp4
+1790314914202-982b1031a764cef6.mp3
+1790317304972-25bef1e6044c013e.jpeg
+1790398440138-5613b666d11d6f0d.jpeg
+```
+
+The current checkout does not have these files. If you recover them, copy them into `server\uploads` before starting the app. Do not expect `git pull` to restore them.
+
 ## What you need to install
 
 Install these before continuing:
@@ -96,7 +120,7 @@ npm --prefix server run db:seed
 
 The seed command is safe to repeat: it inserts missing fixture assets and does not replace existing records.
 
-The fixture contains asset metadata, not MongoDB users or all of the original media files. It preserves the original owner IDs and wallets; some owners do not exist in a fresh database. Register a local app account and link a wallet for your own use. Assets whose original owner is not your account may not appear in **My Assets**. File-backed records may have no preview until their original files are restored into `server\uploads`; those files are not in this GitHub repository.
+The fixture preserves the original owner IDs and wallets; some owners do not exist in a fresh database. Register a local app account and link a wallet for your own use. Assets whose original owner is not your account may not appear in **My Assets**. Seeded file-backed records have metadata only until their original media files are restored into `server\uploads`.
 
 ## 5. Start ProofChain
 
@@ -193,7 +217,7 @@ ai-service\venv\Scripts\python.exe -m pip install -r ai-service\requirements.txt
 
 ### The app starts but old file-backed assets have no media
 
-The Git repository has the asset metadata but not the original upload files. Restore the original files into `server\uploads` if you have them. Without those files, the API can still load the asset metadata, but the associated media cannot be displayed or downloaded.
+The Git repository has the asset metadata but not the original upload files. Restore the seven filenames listed above into `server\uploads` if you have them. Without those files, the API can still load the asset metadata, but the associated media cannot be displayed or downloaded.
 
 ### Check what the launcher started
 
