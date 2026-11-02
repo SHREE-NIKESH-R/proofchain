@@ -10,7 +10,18 @@ cd D:\proofchain-phase1-2\server; npm install
 cd D:\proofchain-phase1-2\client; npm install
 ```
 
-Create the existing `.env` files from each service's `.env.example` and fill in local secrets as documented by the project README. Create the AI virtual environment and install its requirements:
+From the project root, copy the example environment files without overwriting any existing local settings:
+
+```powershell
+if (-not (Test-Path server\.env)) { Copy-Item server\.env.example server\.env }
+if (-not (Test-Path client\.env)) { Copy-Item client\.env.example client\.env }
+if (-not (Test-Path ai-service\.env)) { Copy-Item ai-service\.env.example ai-service\.env }
+if (-not (Test-Path blockchain\.env)) { Copy-Item blockchain\.env.example blockchain\.env }
+```
+
+Keep the resulting `.env` files local: they are intentionally excluded from Git. Replace the example JWT secret with a private random value and enter any needed credentials locally; never commit them. The example MongoDB URI uses the local `proofchain` database.
+
+Create the AI virtual environment and install its requirements:
 
 ```powershell
 cd D:\proofchain-phase1-2\ai-service
@@ -33,7 +44,7 @@ The script uses `MONGODB_URI` from `server\.env`, or defaults to `mongodb://127.
 
 The fixture preserves the original `userId` and wallet values. Some referenced users are not part of this asset-only fixture, so those records may not appear in a signed-in user's **My Assets** list. Their ownership metadata is not reassigned.
 
-Three of the six file-backed fixture records reference uploads that are missing from the workspace. The upload directory is deliberately excluded from Git, so media for all file-backed assets must be restored separately for a fresh clone; the asset metadata can still be imported.
+The seven file-backed fixture records refer to media files that are not included in Git. Restore those files separately into `server\uploads` if you need their media to be available; the asset metadata can still be imported.
 
 ## One-command startup
 

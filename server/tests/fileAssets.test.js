@@ -6,7 +6,11 @@ jest.mock("../services/aiService");
 
 const request = require("supertest");
 const fs = require("fs");
+const os = require("os");
+const path = require("path");
 const { ethers } = require("ethers");
+const TEST_UPLOAD_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "proofchain-file-assets-"));
+process.env.PROOFCHAIN_UPLOAD_DIR = TEST_UPLOAD_DIR;
 const createApp = require("../app");
 const blockchainService = require("../services/blockchainService");
 const aiService = require("../services/aiService");
@@ -18,11 +22,9 @@ const { setupTestDB, teardownTestDB, clearTestDB } = require("./setup");
 const app = createApp();
 
 beforeAll(setupTestDB);
-afterAll(() => {
-  teardownTestDB();
-  if (fs.existsSync(storageService.UPLOAD_DIR)) {
-    fs.rmSync(storageService.UPLOAD_DIR, { recursive: true, force: true });
-  }
+afterAll(async () => {
+  await teardownTestDB();
+  fs.rmSync(TEST_UPLOAD_DIR, { recursive: true, force: true });
 });
 afterEach(clearTestDB);
 afterEach(() => jest.clearAllMocks());

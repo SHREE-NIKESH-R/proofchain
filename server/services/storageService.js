@@ -11,7 +11,8 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 
-const UPLOAD_DIR = path.join(__dirname, "..", "uploads");
+const UPLOAD_DIR =
+  process.env.PROOFCHAIN_UPLOAD_DIR || path.join(__dirname, "..", "uploads");
 
 function ensureUploadDir() {
   if (!fs.existsSync(UPLOAD_DIR)) {
