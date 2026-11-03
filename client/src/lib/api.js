@@ -106,6 +106,18 @@ export const api = {
       auth: false,
     });
   },
+  embedHiddenProof: (textContent, txHash) =>
+    request("/assets/hidden-proof/embed", {
+      method: "POST",
+      body: { textContent, txHash },
+      auth: false,
+    }),
+  extractHiddenProof: (textContent) =>
+    request("/assets/hidden-proof/extract", {
+      method: "POST",
+      body: { textContent },
+      auth: false,
+    }),
   listMyAssets: () => request("/assets"),
   getAsset: (assetId) => request(`/assets/${assetId}`, { auth: false }),
   transferAsset: (assetId, toWallet, txHash) =>
@@ -124,4 +136,14 @@ export const api = {
   updateMyProfile: (displayName, bio) =>
     request("/profiles/me", { method: "PUT", body: { displayName, bio } }),
   getPublicProfile: (wallet) => request(`/profiles/${wallet}`, { auth: false }),
+
+  listDisputes: () => request("/disputes"),
+  listAssetDisputes: (assetId) => request(`/disputes/asset/${assetId}`),
+  createDispute: (payload) =>
+    request("/disputes", { method: "POST", body: payload }),
+  updateDisputeStatus: (id, status, adminNote = "") =>
+    request(`/disputes/${id}/status`, {
+      method: "PATCH",
+      body: { status, adminNote },
+    }),
 };

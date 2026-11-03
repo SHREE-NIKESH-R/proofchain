@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AlertTriangle,
@@ -8,28 +8,16 @@ import {
   ShieldAlert,
   UploadCloud,
 } from "lucide-react";
+import { api } from "../lib/api";
 
-const initialDisputes = [
-  {
-    id: "DSP-1041",
-    assetId: "A-1041",
-    claimant: "0x91A7...99FD",
-    reason: "Conflicting ownership claim on reused prompt",
-    status: "Escrowed",
-    updated: "2 hours ago",
-  },
-  {
-    id: "DSP-1038",
-    assetId: "A-9832",
-    claimant: "0x54B2...1E8A",
-    reason: "Watermark mismatch during verification",
-    status: "Pending review",
-    updated: "1 day ago",
-  },
-];
+const STORAGE_KEY = "proofchain_disputes_v1";
+
+function toDisplayLabel(value) {
+  return value || "0xUnknown";
+}
 
 export default function DisputeCenter() {
-  const [disputes, setDisputes] = useState(initialDisputes);
+  const [disputes, setDisputes] = useState([]);
   const [form, setForm] = useState({
     assetId: "",
     claimant: "",
@@ -39,6 +27,37 @@ export default function DisputeCenter() {
     fileName: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadDisputes() {
+      try {
+        const res = await api.listDisputes();
+        setDisputes(res.disputes || []);
+      } catch {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            setDisputes(Array.isArray(parsed) ? parsed : []);
+          }
+        } catch {
+          setDisputes([]);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDisputes();
+  }, []);
+
+  useEffect(() => {
+    if (disputes.length > 0) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(disputes));
+    }
+  }, [disputes]);
 
   const stats = useMemo(() => {
     const pending = disputes.filter((d) => d.status !== "Resolved").length;
@@ -56,28 +75,53 @@ export default function DisputeCenter() {
     setForm((prev) => ({ ...prev, fileName: file ? file.name : "" }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
 
-    const newDispute = {
-      id: `DSP-${Math.floor(Math.random() * 9000 + 1000)}`,
-      assetId: form.assetId || "A-NEW-CLAIM",
-      claimant: form.claimant || "0xNew...Claimant",
-      reason: form.reason || "Ownership dispute submitted",
-      status: "Pending review",
-      updated: "Just now",
-    };
+    try {
+      const payload = {
+        assetId: form.assetId,
+        claimantWallet: form.claimant,
+        reason: form.reason,
+        hashHistory: form.hashHistory,
+        timestamp: form.timestamp,
+        evidenceFile: form.fileName,
+      };
 
-    setDisputes((prev) => [newDispute, ...prev]);
-    setSubmitted(true);
-    setForm({
-      assetId: "",
-      claimant: "",
-      reason: "",
-      hashHistory: "",
-      timestamp: "",
-      fileName: "",
-    });
+      const { dispute } = await api.createDispute(payload);
+      setDisputes((prev) => [dispute, ...prev]);
+      setSubmitted(true);
+      setForm({
+        assetId: "",
+        claimant: "",
+        reason: "",
+        hashHistory: "",
+        timestamp: "",
+        fileName: "",
+      });
+    } catch (err) {
+      setError(err.message || "Unable to submit the dispute.");
+    }
+  }
+
+  async function handleStatusUpdate(disputeId, nextStatus) {
+    try {
+      const { dispute } = await api.updateDisputeStatus(
+        disputeId,
+        nextStatus,
+        "Reviewed from dispute center",
+      );
+      setDisputes((prev) =>
+        prev.map((item) =>
+          item._id === disputeId || item.id === disputeId
+            ? { ...item, ...dispute }
+            : item,
+        ),
+      );
+    } catch (err) {
+      setError(err.message || "Unable to update the dispute.");
+    }
   }
 
   return (
@@ -179,8 +223,9 @@ export default function DisputeCenter() {
             asset has been moved into review.
           </p>
         )}
+        {error && <p className="error-text">{error}</p>}
 
-        <button type="submit">
+        <button type="submit" disabled={loading}>
           <UploadCloud size={16} strokeWidth={2} />
           Submit dispute evidence
         </button>
@@ -188,53 +233,98 @@ export default function DisputeCenter() {
 
       <section className="card">
         <h2>Current claims</h2>
-        <div
-          style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}
-        >
-          {disputes.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius-md)",
-                padding: "0.9rem",
-                background: "rgba(255,255,255,0.02)",
-              }}
-            >
+        {loading ? (
+          <p className="note">Loading claims…</p>
+        ) : disputes.length === 0 ? (
+          <p className="note">No disputes have been filed yet.</p>
+        ) : (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}
+          >
+            {disputes.map((item) => (
               <div
+                key={item._id || item.id}
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  gap: "0.5rem",
-                  flexWrap: "wrap",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius-md)",
+                  padding: "0.9rem",
+                  background: "rgba(255,255,255,0.02)",
                 }}
               >
-                <strong>{item.id}</strong>
-                <span className="badge badge-pending">{item.status}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "0.5rem",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <strong>
+                    {item._id ? item._id.slice(-6).toUpperCase() : item.id}
+                  </strong>
+                  <span className="badge badge-pending">{item.status}</span>
+                </div>
+                <p className="note" style={{ margin: "0.55rem 0" }}>
+                  Asset: {item.assetId} • Claimant:{" "}
+                  {toDisplayLabel(item.claimantWallet || item.claimant)}
+                </p>
+                <p>{item.reason}</p>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "0.5rem",
+                    flexWrap: "wrap",
+                    marginTop: "0.5rem",
+                  }}
+                >
+                  <span className="note mono-text">
+                    <Clock3 size={14} strokeWidth={2} />{" "}
+                    {item.createdAt
+                      ? new Date(item.createdAt).toLocaleString()
+                      : item.updated || "Just now"}
+                  </span>
+                  <div
+                    style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}
+                  >
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      onClick={() =>
+                        handleStatusUpdate(item._id || item.id, "Escrowed")
+                      }
+                    >
+                      Escrow
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      onClick={() =>
+                        handleStatusUpdate(item._id || item.id, "Resolved")
+                      }
+                    >
+                      Resolve
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      onClick={() =>
+                        handleStatusUpdate(item._id || item.id, "Rejected")
+                      }
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </div>
+                <div style={{ marginTop: "0.75rem" }}>
+                  <Link to={`/assets/${item.assetId}`} className="text-link">
+                    <FileText size={14} strokeWidth={2} /> Open proof
+                  </Link>
+                </div>
               </div>
-              <p className="note" style={{ margin: "0.55rem 0" }}>
-                Asset: {item.assetId} • Claimant: {item.claimant}
-              </p>
-              <p>{item.reason}</p>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  gap: "0.5rem",
-                  flexWrap: "wrap",
-                  marginTop: "0.5rem",
-                }}
-              >
-                <span className="note mono-text">
-                  <Clock3 size={14} strokeWidth={2} /> {item.updated}
-                </span>
-                <Link to={`/assets/${item.assetId}`} className="text-link">
-                  <FileText size={14} strokeWidth={2} /> Open proof
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

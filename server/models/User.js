@@ -21,8 +21,12 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("User", userSchema);

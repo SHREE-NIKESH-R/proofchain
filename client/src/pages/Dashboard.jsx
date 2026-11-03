@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../lib/api";
+import { formatAssetId } from "../lib/formatAssetId";
 import AnimatedNumber from "../components/AnimatedNumber";
 import ScrollReveal from "../components/ScrollReveal";
 import { SkeletonLine } from "../components/Skeleton";
@@ -253,6 +254,7 @@ export default function Dashboard() {
             <thead>
               <tr>
                 <th>Asset</th>
+                <th>Asset ID</th>
                 <th>Type</th>
                 <th>Status</th>
               </tr>
@@ -263,6 +265,7 @@ export default function Dashboard() {
                   <td>
                     <Link to={`/assets/${asset.assetId}`}>{asset.title}</Link>
                   </td>
+                  <td className="note">{formatAssetId(asset.assetId)}</td>
                   <td className="note">{asset.contentType}</td>
                   <td>
                     <span

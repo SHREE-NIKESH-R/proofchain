@@ -141,13 +141,13 @@ http://localhost:5173
 
 Other local service URLs:
 
-| Service | URL |
-|---|---|
-| Frontend | `http://localhost:5173` |
-| Backend health check | `http://localhost:5000/health` |
-| AI service health check | `http://localhost:8000/health` |
-| Local blockchain RPC | `http://127.0.0.1:8545` |
-| MongoDB | `mongodb://127.0.0.1:27017/proofchain` |
+| Service                 | URL                                    |
+| ----------------------- | -------------------------------------- |
+| Frontend                | `http://localhost:5173`                |
+| Backend health check    | `http://localhost:5000/health`         |
+| AI service health check | `http://localhost:8000/health`         |
+| Local blockchain RPC    | `http://127.0.0.1:8545`                |
+| MongoDB                 | `mongodb://127.0.0.1:27017/proofchain` |
 
 Create an account in the app on each fresh machine, then link your wallet as prompted. Existing passwords and user accounts are not included in the repository.
 

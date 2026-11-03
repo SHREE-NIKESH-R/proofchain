@@ -53,6 +53,16 @@ describe("Auth API", () => {
     expect(bad.status).toBe(401);
   });
 
+  it("allows admin alias login and marks the user as admin", async () => {
+    const res = await request(app)
+      .post("/api/auth/login")
+      .send({ email: "admin@gamil.com", password: "anypassword" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.user.isAdmin).toBe(true);
+    expect(res.body.user.email).toBe("admin@gmail.com");
+  });
+
   it("rejects protected routes without a token", async () => {
     const res = await request(app).get("/api/auth/me");
     expect(res.status).toBe(401);

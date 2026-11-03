@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { UserPlus, AlertCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { isAdminEmail } from "../lib/admin";
 import AuthVisual from "../components/AuthVisual";
 
 export default function RegisterAccount() {
@@ -18,8 +19,10 @@ export default function RegisterAccount() {
     setError(null);
     setSubmitting(true);
     try {
-      await register(email, password);
-      navigate("/dashboard");
+      const user = await register(email, password);
+      const target =
+        user?.isAdmin || isAdminEmail(user?.email) ? "/admin" : "/dashboard";
+      navigate(target);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -47,7 +50,13 @@ export default function RegisterAccount() {
           <form onSubmit={handleSubmit}>
             <label>
               Email
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoFocus
+              />
             </label>
             <label>
               Password
@@ -66,7 +75,11 @@ export default function RegisterAccount() {
               </p>
             )}
             <button type="submit" disabled={submitting}>
-              <UserPlus size={16} strokeWidth={2} style={{ marginRight: "0.4rem", verticalAlign: "-3px" }} />
+              <UserPlus
+                size={16}
+                strokeWidth={2}
+                style={{ marginRight: "0.4rem", verticalAlign: "-3px" }}
+              />
               {submitting ? "Creating account..." : "Create account"}
             </button>
           </form>

@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { LogIn, AlertCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { isAdminEmail } from "../lib/admin";
 import AuthVisual from "../components/AuthVisual";
 
 export default function Login() {
@@ -18,8 +19,10 @@ export default function Login() {
     setError(null);
     setSubmitting(true);
     try {
-      await login(email, password);
-      navigate("/dashboard");
+      const user = await login(email, password);
+      const target =
+        user?.isAdmin || isAdminEmail(user?.email) ? "/admin" : "/dashboard";
+      navigate(target);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -47,11 +50,22 @@ export default function Login() {
           <form onSubmit={handleSubmit}>
             <label>
               Email
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoFocus
+              />
             </label>
             <label>
               Password
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </label>
             {error && (
               <p className="error-text">
@@ -59,7 +73,11 @@ export default function Login() {
               </p>
             )}
             <button type="submit" disabled={submitting}>
-              <LogIn size={16} strokeWidth={2} style={{ marginRight: "0.4rem", verticalAlign: "-3px" }} />
+              <LogIn
+                size={16}
+                strokeWidth={2}
+                style={{ marginRight: "0.4rem", verticalAlign: "-3px" }}
+              />
               {submitting ? "Logging in..." : "Log in"}
             </button>
           </form>

@@ -1,0 +1,14 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: proofchain-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: proofchain
+    volumes:
+      - proofchain-mongo-data:/data/db
+
+volumes:
+  proofchain-mongo-data:

@@ -40,12 +40,14 @@ export function AuthProvider({ children }) {
     const { token, user: newUser } = await api.register(email, password);
     localStorage.setItem("proofchain_token", token);
     setUser(newUser);
+    return newUser;
   }
 
   async function login(email, password) {
     const { token, user: loggedInUser } = await api.login(email, password);
     localStorage.setItem("proofchain_token", token);
     setUser(loggedInUser);
+    return loggedInUser;
   }
 
   function logout() {

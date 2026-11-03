@@ -33,6 +33,15 @@ export default function VerifyContent() {
   const [compareAsset, setCompareAsset] = useState(null);
   const [comparing, setComparing] = useState(false);
   const [showDiagnostics, setShowDiagnostics] = useState(false);
+  const [proofText, setProofText] = useState(
+    "This is my original creative work for ProofChain verification.",
+  );
+  const [proofTxHash, setProofTxHash] = useState(
+    "0x1234567890abcdef1234567890abcdef12345678",
+  );
+  const [embeddedProof, setEmbeddedProof] = useState("");
+  const [proofStatus, setProofStatus] = useState(null);
+  const [proofLoading, setProofLoading] = useState(false);
 
   async function handleCompare(matchedAssetId) {
     setComparing(true);
@@ -43,6 +52,47 @@ export default function VerifyContent() {
       // best-effort — comparison is a bonus view, not core to verification
     } finally {
       setComparing(false);
+    }
+  }
+
+  async function handleEmbedProof() {
+    setProofStatus(null);
+    setProofLoading(true);
+    try {
+      const res = await api.embedHiddenProof(proofText, proofTxHash);
+      setEmbeddedProof(res.embeddedText);
+      setProofStatus({
+        variant: "success",
+        message:
+          "Hidden tx hash embedded. The visible text still reads normally.",
+      });
+    } catch (err) {
+      setProofStatus({
+        variant: "error",
+        message: err.message || "Could not embed the hidden proof.",
+      });
+    } finally {
+      setProofLoading(false);
+    }
+  }
+
+  async function handleExtractProof() {
+    setProofStatus(null);
+    setProofLoading(true);
+    try {
+      const res = await api.extractHiddenProof(embeddedProof || proofText);
+      setProofTxHash(res.txHash);
+      setProofStatus({
+        variant: "success",
+        message: `Recovered tx hash: ${res.txHash}`,
+      });
+    } catch (err) {
+      setProofStatus({
+        variant: "error",
+        message: err.message || "No hidden proof was found in the text.",
+      });
+    } finally {
+      setProofLoading(false);
     }
   }
 
@@ -166,6 +216,68 @@ export default function VerifyContent() {
           {checking ? statusLabel || "Checking..." : "Verify content"}
         </button>
       </form>
+
+      <div className="card" style={{ marginTop: "2rem" }}>
+        <h2 style={{ marginTop: 0 }}>Hidden proof test</h2>
+        <p className="note">
+          This checks the screenshot requirement: normal text stays readable
+          while a blockchain tx hash is embedded as zero-width Unicode and later
+          recovered.
+        </p>
+
+        <label>
+          Visible text
+          <textarea
+            value={proofText}
+            onChange={(e) => setProofText(e.target.value)}
+            rows={4}
+          />
+        </label>
+
+        <label>
+          Transaction hash to hide
+          <input
+            value={proofTxHash}
+            onChange={(e) => setProofTxHash(e.target.value)}
+          />
+        </label>
+
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+          <button
+            type="button"
+            onClick={handleEmbedProof}
+            disabled={proofLoading}
+          >
+            Embed hash
+          </button>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={handleExtractProof}
+            disabled={proofLoading || !embeddedProof}
+          >
+            Extract hash
+          </button>
+        </div>
+
+        {embeddedProof && (
+          <div style={{ marginTop: "1rem" }}>
+            <p className="note">Embedded text</p>
+            <textarea value={embeddedProof} rows={4} readOnly />
+          </div>
+        )}
+
+        {proofStatus && (
+          <p
+            className={
+              proofStatus.variant === "error" ? "error-text" : "success-text"
+            }
+            style={{ marginTop: "1rem" }}
+          >
+            {proofStatus.message}
+          </p>
+        )}
+      </div>
 
       {result && (
         <motion.div

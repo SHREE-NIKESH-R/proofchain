@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const assetRoutes = require("./routes/assetRoutes");
 const publicRoutes = require("./routes/publicRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const disputeRoutes = require("./routes/disputeRoutes");
 const { errorHandler, notFoundHandler } = require("./middleware/errorHandler");
 
 function createApp() {
@@ -54,6 +55,7 @@ function createApp() {
   app.use("/api/assets", assetRoutes);
   app.use("/api/public", publicRoutes);
   app.use("/api/profiles", profileRoutes);
+  app.use("/api/disputes", disputeRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

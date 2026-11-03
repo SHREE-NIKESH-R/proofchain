@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "./context/AuthContext";
 import { api } from "./lib/api";
+import { isAdminEmail } from "./lib/admin";
 import ProtectedRoute from "./context/ProtectedRoute";
 import AmbientBackground from "./components/AmbientBackground";
 import ThemeToggle from "./components/ThemeToggle";
@@ -33,6 +34,7 @@ import OwnershipTransfer from "./pages/OwnershipTransfer";
 import Profile from "./pages/Profile";
 import Certificate from "./pages/Certificate";
 import CreatorProfile from "./pages/CreatorProfile";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function NavLink({ to, children, icon: Icon }) {
   const location = useLocation();
@@ -75,6 +77,11 @@ function Nav() {
         </NavLink>
         {user ? (
           <>
+            {user.isAdmin || isAdminEmail(user.email) ? (
+              <NavLink to="/admin" icon={ShieldCheck}>
+                Admin
+              </NavLink>
+            ) : null}
             <NavLink to="/dashboard" icon={LayoutDashboard}>
               Dashboard
             </NavLink>
@@ -141,6 +148,15 @@ function Nav() {
       </div>
     </nav>
   );
+}
+
+function AdminRoute({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="page">Loading...</div>;
+  if (!user || (!user.isAdmin && !isAdminEmail(user.email))) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return children;
 }
 
 function AnimatedRoutes() {
@@ -228,6 +244,16 @@ function AnimatedRoutes() {
             <PageTransition>
               <Certificate />
             </PageTransition>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <PageTransition>
+                <AdminDashboard />
+              </PageTransition>
+            </AdminRoute>
           }
         />
         <Route
