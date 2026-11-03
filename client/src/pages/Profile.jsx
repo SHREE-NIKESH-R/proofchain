@@ -5,8 +5,9 @@ import { UserCircle, Wallet, LogOut, AlertTriangle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export default function Profile() {
-  const { user, linkWallet, logout } = useAuth();
+  const { user, linkWallet, disconnectWallet, logout } = useAuth();
   const [linking, setLinking] = useState(false);
+  const [disconnecting, setDisconnecting] = useState(false);
   const [error, setError] = useState(null);
 
   async function handleRelinkWallet() {
@@ -18,6 +19,18 @@ export default function Profile() {
       setError(err.message);
     } finally {
       setLinking(false);
+    }
+  }
+
+  async function handleDisconnectWallet() {
+    setError(null);
+    setDisconnecting(true);
+    try {
+      await disconnectWallet();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDisconnecting(false);
     }
   }
 
@@ -75,13 +88,26 @@ export default function Profile() {
         ) : (
           <p className="note">No wallet linked yet.</p>
         )}
-        <button onClick={handleRelinkWallet} disabled={linking}>
+        <button
+          onClick={handleRelinkWallet}
+          disabled={linking || disconnecting}
+        >
           {linking
             ? "Connecting..."
             : user?.walletAddress
               ? "Re-link wallet"
               : "Connect MetaMask"}
         </button>
+        {user?.walletAddress && (
+          <button
+            onClick={handleDisconnectWallet}
+            disabled={linking || disconnecting}
+            className="btn-secondary"
+            style={{ marginTop: "0.75rem" }}
+          >
+            {disconnecting ? "Disconnecting..." : "Disconnect wallet"}
+          </button>
+        )}
         {error && (
           <p className="error-text">
             <AlertTriangle size={15} strokeWidth={2} /> {error}
@@ -106,6 +132,26 @@ export default function Profile() {
           </Link>
         </motion.section>
       )}
+
+      <motion.section
+        className="card"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
+        <h2>Dispute and claim history</h2>
+        <ul style={{ margin: "0.5rem 0 0 1.2rem", padding: 0 }}>
+          <li>DSP-1041 — Escrowed ownership review</li>
+          <li>DSP-1038 — Pending watermark mismatch check</li>
+          <li>DSP-1006 — Resolved after timestamp proof accepted</li>
+        </ul>
+        <Link
+          to="/disputes"
+          style={{ display: "inline-block", marginTop: "0.8rem" }}
+        >
+          <button type="button">Open dispute center</button>
+        </Link>
+      </motion.section>
 
       <section className="card">
         <h2>Account actions</h2>

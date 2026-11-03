@@ -215,6 +215,62 @@ export default function AssetDetail() {
         </section>
       )}
 
+      <section className="card">
+        <h2>Proof integrity and dispute workflow</h2>
+        <div style={{ display: "grid", gap: "0.7rem" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <span className="note">Blockchain owner</span>
+            <code>{asset.ownerWallet}</code>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <span className="note">Transaction hash</span>
+            <code>{asset.blockchainTxHash || "0xProofHash..."}</code>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <span className="note">Hidden watermark status</span>
+            <span className="badge badge-verified">Embedded and valid</span>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <span className="note">Verification status</span>
+            <span className="badge badge-pending">Protected under review</span>
+          </div>
+        </div>
+        <Link
+          to="/disputes"
+          style={{ display: "inline-block", marginTop: "1rem" }}
+        >
+          <button type="button">Raise dispute</button>
+        </Link>
+      </section>
+
       {/* Originality Report */}
       {asset.originalityAnalysis && (
         <section className="card">

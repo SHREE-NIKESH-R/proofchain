@@ -2,7 +2,7 @@
 param()
 
 $ErrorActionPreference = 'Stop'
-$Root = 'D:\proofchain-phase1-2'
+$Root = $PSScriptRoot
 $StatePath = Join-Path $Root '.proofchain-runtime.json'
 
 if (-not (Test-Path $StatePath)) {

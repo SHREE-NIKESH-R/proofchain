@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { api } from "../lib/api";
 import { connectWallet, getSigner } from "../lib/wallet";
 
@@ -57,7 +63,10 @@ export function AuthProvider({ children }) {
     const signer = await getSigner();
     const signature = await signer.signMessage(message);
 
-    if (signer.address && signer.address.toLowerCase() !== address.toLowerCase()) {
+    if (
+      signer.address &&
+      signer.address.toLowerCase() !== address.toLowerCase()
+    ) {
       throw new Error("Connected account changed mid-flow. Please try again.");
     }
 
@@ -66,8 +75,38 @@ export function AuthProvider({ children }) {
     return updatedUser;
   }
 
+  async function disconnectWallet() {
+    try {
+      if (window?.ethereum && typeof window.ethereum.request === "function") {
+        try {
+          await window.ethereum.request({
+            method: "wallet_revokePermissions",
+            params: [{ eth_accounts: {} }],
+          });
+        } catch {
+          // Some MetaMask versions do not support the revoke permissions method.
+        }
+      }
+    } finally {
+      const { user: updatedUser } = await api.unlinkWallet();
+      setUser(updatedUser);
+      return updatedUser;
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, register, login, logout, linkWallet, refreshUser }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        register,
+        login,
+        logout,
+        linkWallet,
+        disconnectWallet,
+        refreshUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

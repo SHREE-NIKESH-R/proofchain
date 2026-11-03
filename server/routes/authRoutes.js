@@ -5,6 +5,7 @@ const {
   login,
   requestWalletNonce,
   linkWallet,
+  unlinkWallet,
   me,
 } = require("../controllers/authController");
 
@@ -16,5 +17,6 @@ router.get("/me", requireAuth, me);
 
 router.get("/wallet/nonce", requireAuth, requestWalletNonce);
 router.post("/wallet/link", requireAuth, linkWallet);
+router.post("/wallet/unlink", requireAuth, unlinkWallet);
 
 module.exports = router;

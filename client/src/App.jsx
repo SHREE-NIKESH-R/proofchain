@@ -26,6 +26,7 @@ import Dashboard from "./pages/Dashboard";
 import RegisterAsset from "./pages/RegisterAsset";
 import MyAssets from "./pages/MyAssets";
 import VerifyContent from "./pages/VerifyContent";
+import DisputeCenter from "./pages/DisputeCenter";
 import AssetDetail from "./pages/AssetDetail";
 import PublicExplorer from "./pages/PublicExplorer";
 import OwnershipTransfer from "./pages/OwnershipTransfer";
@@ -82,6 +83,9 @@ function Nav() {
             </NavLink>
             <NavLink to="/register" icon={PlusCircle}>
               Register
+            </NavLink>
+            <NavLink to="/disputes" icon={ShieldCheck}>
+              Disputes
             </NavLink>
             <NavLink to="/transfer" icon={ArrowLeftRight}>
               Transfer
@@ -174,6 +178,16 @@ function AnimatedRoutes() {
             <PageTransition>
               <VerifyContent />
             </PageTransition>
+          }
+        />
+        <Route
+          path="/disputes"
+          element={
+            <ProtectedRoute>
+              <PageTransition>
+                <DisputeCenter />
+              </PageTransition>
+            </ProtectedRoute>
           }
         />
         <Route

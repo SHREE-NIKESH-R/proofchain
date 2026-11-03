@@ -13,7 +13,10 @@ afterAll(teardownTestDB);
 afterEach(clearTestDB);
 
 describe("Auth API", () => {
-  const credentials = { email: "creator@example.com", password: "supersecure123" };
+  const credentials = {
+    email: "creator@example.com",
+    password: "supersecure123",
+  };
 
   it("registers a new user with a hashed password (never returns the raw password)", async () => {
     const res = await request(app).post("/api/auth/register").send(credentials);
@@ -56,7 +59,9 @@ describe("Auth API", () => {
   });
 
   it("links a MetaMask wallet via nonce + signature verification", async () => {
-    const registerRes = await request(app).post("/api/auth/register").send(credentials);
+    const registerRes = await request(app)
+      .post("/api/auth/register")
+      .send(credentials);
     const token = registerRes.body.token;
 
     const nonceRes = await request(app)
@@ -75,14 +80,45 @@ describe("Auth API", () => {
       .send({ walletAddress: wallet.address, signature });
 
     expect(linkRes.status).toBe(200);
-    expect(linkRes.body.user.walletAddress.toLowerCase()).toBe(wallet.address.toLowerCase());
+    expect(linkRes.body.user.walletAddress.toLowerCase()).toBe(
+      wallet.address.toLowerCase(),
+    );
+  });
+
+  it("unlinks a MetaMask wallet from the authenticated account", async () => {
+    const registerRes = await request(app)
+      .post("/api/auth/register")
+      .send(credentials);
+    const token = registerRes.body.token;
+
+    const nonceRes = await request(app)
+      .get("/api/auth/wallet/nonce")
+      .set("Authorization", `Bearer ${token}`);
+    const wallet = ethers.Wallet.createRandom();
+    const signature = await wallet.signMessage(nonceRes.body.message);
+
+    await request(app)
+      .post("/api/auth/wallet/link")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ walletAddress: wallet.address, signature });
+
+    const unlinkRes = await request(app)
+      .post("/api/auth/wallet/unlink")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(unlinkRes.status).toBe(200);
+    expect(unlinkRes.body.user.walletAddress).toBeNull();
   });
 
   it("rejects wallet linking when the signature doesn't match the claimed address", async () => {
-    const registerRes = await request(app).post("/api/auth/register").send(credentials);
+    const registerRes = await request(app)
+      .post("/api/auth/register")
+      .send(credentials);
     const token = registerRes.body.token;
 
-    await request(app).get("/api/auth/wallet/nonce").set("Authorization", `Bearer ${token}`);
+    await request(app)
+      .get("/api/auth/wallet/nonce")
+      .set("Authorization", `Bearer ${token}`);
 
     const signer = ethers.Wallet.createRandom();
     const impersonated = ethers.Wallet.createRandom();
