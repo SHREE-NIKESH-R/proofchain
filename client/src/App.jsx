@@ -8,7 +8,6 @@ import {
   ArrowLeftRight,
   User,
   LogOut,
-  Search,
   ShieldCheck,
   UserPlus,
 } from "lucide-react";
@@ -29,7 +28,6 @@ import MyAssets from "./pages/MyAssets";
 import VerifyContent from "./pages/VerifyContent";
 import DisputeCenter from "./pages/DisputeCenter";
 import AssetDetail from "./pages/AssetDetail";
-import PublicExplorer from "./pages/PublicExplorer";
 import OwnershipTransfer from "./pages/OwnershipTransfer";
 import Profile from "./pages/Profile";
 import Certificate from "./pages/Certificate";
@@ -69,35 +67,40 @@ function Nav() {
         ProofChain
       </Link>
       <div className="nav-links">
-        <NavLink to="/explorer" icon={Search}>
-          Explorer
-        </NavLink>
         <NavLink to="/verify" icon={ShieldCheck}>
           Verify
         </NavLink>
         {user ? (
           <>
             {user.isAdmin || isAdminEmail(user.email) ? (
+            <>
               <NavLink to="/admin" icon={ShieldCheck}>
                 Admin
               </NavLink>
-            ) : null}
-            <NavLink to="/dashboard" icon={LayoutDashboard}>
-              Dashboard
-            </NavLink>
-            <NavLink to="/assets" icon={FolderOpen}>
-              My Assets
-            </NavLink>
-            <NavLink to="/register" icon={PlusCircle}>
-              Register
-            </NavLink>
-            <NavLink to="/disputes" icon={ShieldCheck}>
-              Disputes
-            </NavLink>
-            <NavLink to="/transfer" icon={ArrowLeftRight}>
-              Transfer
-            </NavLink>
-            <Link
+              <NavLink to="/disputes" icon={ShieldCheck}>
+                Disputes
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink to="/dashboard" icon={LayoutDashboard}>
+                Dashboard
+              </NavLink>
+              <NavLink to="/assets" icon={FolderOpen}>
+                My Assets
+              </NavLink>
+              <NavLink to="/register" icon={PlusCircle}>
+                Register
+              </NavLink>
+              <NavLink to="/disputes" icon={ShieldCheck}>
+                Disputes
+              </NavLink>
+              <NavLink to="/transfer" icon={ArrowLeftRight}>
+                Transfer
+              </NavLink>
+            </>
+          )}
+          <Link
               to={
                 user.walletAddress
                   ? `/creator/${user.walletAddress}`
@@ -204,14 +207,6 @@ function AnimatedRoutes() {
                 <DisputeCenter />
               </PageTransition>
             </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/explorer"
-          element={
-            <PageTransition>
-              <PublicExplorer />
-            </PageTransition>
           }
         />
         <Route

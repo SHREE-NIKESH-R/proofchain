@@ -129,5 +129,55 @@ describe("ProofChain", function () {
       expect(history).to.deep.equal([alice.address, bob.address, stranger.address]);
     });
   });
+
+  describe("dispute workflow", function () {
+    it("raises a dispute, escrows verification, and records a timestamp proof", async function () {
+      const { contentHash, assetId } = makeAsset("dispute test", "salt-10");
+      const timestampProof = ethers.keccak256(ethers.toUtf8Bytes("2025-01-01T00:00:00Z"));
+      await proofChain.connect(alice).registerAsset(assetId, contentHash, CONTENT_TYPE, AI_MODEL);
+
+      await expect(
+        proofChain.connect(bob).raiseDispute(assetId, bob.address, timestampProof, "Conflicting ownership claim")
+      )
+        .to.emit(proofChain, "DisputeRaised")
+        .withArgs(assetId, bob.address, timestampProof, anyValue);
+
+      expect(await proofChain.getVerificationStatus(assetId)).to.equal(1); // Escrowed
+      expect(await proofChain.isInEscrow(assetId)).to.equal(true);
+
+      const dispute = await proofChain.getDispute(assetId);
+      expect(dispute.claimant).to.equal(bob.address);
+      expect(dispute.timestampProof).to.equal(timestampProof);
+      expect(dispute.active).to.equal(true);
+    });
+
+    it("allows the active dispute to be resolved", async function () {
+      const { contentHash, assetId } = makeAsset("resolved dispute", "salt-11");
+      const timestampProof = ethers.keccak256(ethers.toUtf8Bytes("2025-02-01T00:00:00Z"));
+      await proofChain.connect(alice).registerAsset(assetId, contentHash, CONTENT_TYPE, AI_MODEL);
+      await proofChain.connect(bob).raiseDispute(assetId, bob.address, timestampProof, "Conflicting ownership claim");
+
+      await expect(proofChain.connect(alice).resolveDispute(assetId, true))
+        .to.emit(proofChain, "DisputeResolved")
+        .withArgs(assetId, true, anyValue);
+
+      expect(await proofChain.getVerificationStatus(assetId)).to.equal(2); // Resolved
+      const dispute = await proofChain.getDispute(assetId);
+      expect(dispute.active).to.equal(false);
+      expect(dispute.accepted).to.equal(true);
+    });
+
+    it("rejects a second dispute while one is active", async function () {
+      const { contentHash, assetId } = makeAsset("duplicate dispute", "salt-12");
+      const firstProof = ethers.keccak256(ethers.toUtf8Bytes("2025-03-01T00:00:00Z"));
+      const secondProof = ethers.keccak256(ethers.toUtf8Bytes("2025-03-02T00:00:00Z"));
+      await proofChain.connect(alice).registerAsset(assetId, contentHash, CONTENT_TYPE, AI_MODEL);
+      await proofChain.connect(bob).raiseDispute(assetId, bob.address, firstProof, "First claim");
+
+      await expect(
+        proofChain.connect(stranger).raiseDispute(assetId, stranger.address, secondProof, "Second claim")
+      ).to.be.revertedWith("ProofChain: dispute already open");
+    });
+  });
 });
 

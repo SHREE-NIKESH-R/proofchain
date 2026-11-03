@@ -17,6 +17,32 @@ async function post(path, body, isMultipart = false, headers = {}) {
   return res.json();
 }
 
+async function postMediaWatermark(path, contentType, fileBuffer, filename, mimeType, txHash) {
+  const form = new FormData();
+  form.append("contentType", contentType);
+  if (txHash !== undefined) form.append("txHash", txHash);
+  form.append("file", new Blob([fileBuffer], { type: mimeType }), filename);
+
+  const res = await fetch(`${AI_SERVICE_URL}${path}`, {
+    method: "POST",
+    body: form,
+  });
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    const error = new Error(
+      errorBody.detail || `AI service returned ${res.status}`,
+    );
+    error.status =
+      res.status === 413 || res.status === 415 || res.status === 422
+        ? res.status
+        : 502;
+    throw error;
+  }
+  return path.endsWith("/extract")
+    ? res.json()
+    : Buffer.from(await res.arrayBuffer());
+}
+
 /**
  * Requests similarity analysis for text content (Prompt or Article).
  * Returns the consistent OriginalityResult shape from the AI service.
@@ -53,4 +79,32 @@ async function analyzeVideo(assetId, fileBuffer, filename, mimeType, persist = t
   return post("/analyze/video", form, true);
 }
 
-module.exports = { analyzeText, analyzeImage, analyzeAudio, analyzeVideo };
+function embedMediaWatermark(contentType, fileBuffer, filename, mimeType, txHash) {
+  return postMediaWatermark(
+    "/watermark/embed",
+    contentType,
+    fileBuffer,
+    filename,
+    mimeType,
+    txHash,
+  );
+}
+
+function extractMediaWatermark(contentType, fileBuffer, filename, mimeType) {
+  return postMediaWatermark(
+    "/watermark/extract",
+    contentType,
+    fileBuffer,
+    filename,
+    mimeType,
+  );
+}
+
+module.exports = {
+  analyzeText,
+  analyzeImage,
+  analyzeAudio,
+  analyzeVideo,
+  embedMediaWatermark,
+  extractMediaWatermark,
+};

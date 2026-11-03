@@ -15,11 +15,18 @@ const {
     resolveDisplayNames,
 } = require("../services/profileService");
 const { LIMITS } = require("../middleware/upload");
+const path = require("path");
 const {
     embedTxHash,
     extractTxHash,
     stripZeroWidthCharacters,
 } = require("../utils/steganography");
+const {
+    embedMediaProof,
+    extractMediaProof,
+    validateMediaFile,
+    validateTransactionHash,
+} = require("../utils/mediaProof");
 
 const TEXT_CONTENT_TYPES = ["prompt", "article"];
 const FILE_CONTENT_TYPES = ["image", "music", "video"];
@@ -497,6 +504,68 @@ async function extractHiddenProof(req, res, next) {
     }
 }
 
+async function embedMediaHiddenProof(req, res, next) {
+    try {
+        const { contentType, txHash } = req.body || {};
+        if (!txHash || typeof txHash !== "string") {
+            return res.status(400).json({ error: "txHash is required" });
+        }
+        validateTransactionHash(txHash);
+        validateMediaFile(req.file, contentType);
+
+        const watermarkedBuffer = await aiService.embedMediaWatermark(
+            contentType,
+            req.file.buffer,
+            req.file.originalname,
+            req.file.mimetype,
+            txHash,
+        );
+        const embeddedBuffer = await embedMediaProof(
+            { ...req.file, buffer: watermarkedBuffer },
+            contentType,
+            txHash,
+        );
+        const extension = path.extname(req.file.originalname || "");
+        const baseName = path.basename(
+            req.file.originalname || "media",
+            extension,
+        );
+
+        res
+            .type(req.file.mimetype)
+            .attachment(`${baseName}-proofchain${extension}`)
+            .send(embeddedBuffer);
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function extractMediaHiddenProof(req, res, next) {
+    try {
+        const { contentType } = req.body || {};
+        let txHash = await extractMediaProof(req.file, contentType);
+        if (!txHash) {
+            const result = await aiService.extractMediaWatermark(
+                contentType,
+                req.file.buffer,
+                req.file.originalname,
+                req.file.mimetype,
+            );
+            txHash = result.txHash;
+        }
+        if (!txHash) {
+            return res.status(404).json({
+                error: "No hidden ProofChain transaction hash was found in the supplied media",
+                txHash: null,
+            });
+        }
+
+        res.json({ txHash, hiddenProof: true });
+    } catch (err) {
+        next(err);
+    }
+}
+
 /**
  * Similarity-based verification: for content with no exact hash match, runs it through
  * the originality engine to check for near-duplicates. Kept as a separate endpoint from
@@ -803,6 +872,8 @@ module.exports = {
     verifyFileContent,
     embedHiddenProof,
     extractHiddenProof,
+    embedMediaHiddenProof,
+    extractMediaHiddenProof,
     checkSimilarity,
     checkFileSimilarity,
     recordTransfer,

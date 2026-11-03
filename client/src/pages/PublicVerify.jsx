@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ShieldCheck,
   ShieldAlert,
   AlertTriangle,
-  FileSearch,
 } from "lucide-react";
 import { api } from "../lib/api";
 import OwnerIdentity from "../components/OwnerIdentity";
@@ -161,13 +160,8 @@ export default function PublicVerify() {
       )}
 
       <p className="note" style={{ textAlign: "center", marginTop: "1.5rem" }}>
-        <FileSearch
-          size={14}
-          strokeWidth={2}
-          style={{ verticalAlign: "-2px", marginRight: "0.3rem" }}
-        />
         Verified independently against the ProofChain smart contract on Ethereum
-        Sepolia. <Link to="/explorer">Search the public explorer</Link>
+        Sepolia.
       </p>
     </div>
   );

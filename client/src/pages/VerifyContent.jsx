@@ -37,11 +37,14 @@ export default function VerifyContent() {
     "This is my original creative work for ProofChain verification.",
   );
   const [proofTxHash, setProofTxHash] = useState(
-    "0x1234567890abcdef1234567890abcdef12345678",
+    `0x${"1".repeat(64)}`,
   );
   const [embeddedProof, setEmbeddedProof] = useState("");
   const [proofStatus, setProofStatus] = useState(null);
   const [proofLoading, setProofLoading] = useState(false);
+  const [proofMode, setProofMode] = useState("text");
+  const [proofMediaType, setProofMediaType] = useState("image");
+  const [proofMediaFile, setProofMediaFile] = useState(null);
 
   async function handleCompare(matchedAssetId) {
     setComparing(true);
@@ -96,6 +99,58 @@ export default function VerifyContent() {
     }
   }
 
+  async function handleEmbedMediaProof() {
+    setProofStatus(null);
+    setProofLoading(true);
+    try {
+      const { blob, filename } = await api.embedMediaProof(
+        proofMediaType,
+        proofMediaFile,
+        proofTxHash,
+      );
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setProofStatus({
+        variant: "success",
+        message:
+          "Transform watermark and metadata embedded in the downloaded media copy.",
+      });
+    } catch (err) {
+      setProofStatus({
+        variant: "error",
+        message: err.message || "Could not embed the hidden proof in this file.",
+      });
+    } finally {
+      setProofLoading(false);
+    }
+  }
+
+  async function handleExtractMediaProof() {
+    setProofStatus(null);
+    setProofLoading(true);
+    try {
+      const res = await api.extractMediaProof(proofMediaType, proofMediaFile);
+      setProofTxHash(res.txHash);
+      setProofStatus({
+        variant: "success",
+        message: `Recovered tx hash: ${res.txHash}`,
+      });
+    } catch (err) {
+      setProofStatus({
+        variant: "error",
+        message: err.message || "No hidden proof was found in the selected file.",
+      });
+    } finally {
+      setProofLoading(false);
+    }
+  }
+
   const isFileType = FILE_TYPES.includes(contentType);
 
   async function handleSubmit(e) {
@@ -141,7 +196,7 @@ export default function VerifyContent() {
   }
 
   return (
-    <div className="page">
+    <div className="page verify-page">
       <h1>Verify content</h1>
       <p className="note">
         First checks for an exact fingerprint (SHA-256) match. If none is found,
@@ -217,44 +272,104 @@ export default function VerifyContent() {
         </button>
       </form>
 
-      <div className="card" style={{ marginTop: "2rem" }}>
+      <div className="card hidden-proof-card" style={{ marginTop: "2rem" }}>
         <h2 style={{ marginTop: 0 }}>Hidden proof test</h2>
         <p className="note">
-          This checks the screenshot requirement: normal text stays readable
-          while a blockchain tx hash is embedded as zero-width Unicode and later
-          recovered.
+          Embed a transaction hash in text or media metadata, then extract it
+          from the resulting text or file.
         </p>
 
         <label>
-          Visible text
-          <textarea
-            value={proofText}
-            onChange={(e) => setProofText(e.target.value)}
-            rows={4}
-          />
+          Proof format
+          <select
+            value={proofMode}
+            onChange={(e) => {
+              const nextMode = e.target.value;
+              setProofMode(nextMode);
+              if (nextMode === "image" || nextMode === "music") {
+                setProofMediaType(nextMode);
+              }
+              setProofMediaFile(null);
+              setProofStatus(null);
+            }}
+          >
+            <option value="text">Text (zero-width Unicode)</option>
+            <option value="image">Image (DWT/DCT + EXIF)</option>
+            <option value="music">Audio MP3 (DWT/DCT + ID3)</option>
+          </select>
         </label>
+
+        {proofMode === "text" ? (
+          <label>
+            Visible text
+            <textarea
+              className="hidden-proof-textarea"
+              value={proofText}
+              onChange={(e) => setProofText(e.target.value)}
+              rows={4}
+            />
+          </label>
+        ) : (
+          <>
+            <label>
+              {proofMode === "image"
+                ? "Image file (JPEG, PNG, or WebP)"
+                : "Audio file (MP3)"}
+              <input
+                type="file"
+                accept={
+                  proofMode === "image"
+                    ? "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                    : "audio/mpeg,.mp3"
+                }
+                onChange={(e) => setProofMediaFile(e.target.files?.[0] || null)}
+              />
+            </label>
+            <p className="note">
+              Embedding downloads a tagged copy; choose that downloaded copy to
+              extract the hash. The transform-domain watermark is designed to
+              remain extractable if EXIF/ID3 metadata is removed, though heavy
+              editing or compression can still damage it. Video embedding is
+              not part of this feature.
+            </p>
+          </>
+        )}
 
         <label>
           Transaction hash to hide
           <input
             value={proofTxHash}
             onChange={(e) => setProofTxHash(e.target.value)}
+            pattern="0x[a-fA-F0-9]{64}"
+            title="Enter a 32-byte hexadecimal blockchain transaction hash beginning with 0x"
           />
         </label>
 
         <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
           <button
             type="button"
-            onClick={handleEmbedProof}
-            disabled={proofLoading}
+            onClick={
+              proofMode === "text" ? handleEmbedProof : handleEmbedMediaProof
+            }
+            disabled={
+              proofLoading ||
+              (proofMode !== "text" && !proofMediaFile)
+            }
           >
-            Embed hash
+            {proofLoading ? "Working..." : "Embed hash"}
           </button>
           <button
             type="button"
             className="btn-secondary"
-            onClick={handleExtractProof}
-            disabled={proofLoading || !embeddedProof}
+            onClick={
+              proofMode === "text"
+                ? handleExtractProof
+                : handleExtractMediaProof
+            }
+            disabled={
+              proofLoading ||
+              (proofMode === "text" ? !embeddedProof : !proofMediaFile)
+            }
           >
             Extract hash
           </button>
@@ -263,7 +378,12 @@ export default function VerifyContent() {
         {embeddedProof && (
           <div style={{ marginTop: "1rem" }}>
             <p className="note">Embedded text</p>
-            <textarea value={embeddedProof} rows={4} readOnly />
+            <textarea
+              className="hidden-proof-textarea"
+              value={embeddedProof}
+              rows={4}
+              readOnly
+            />
           </div>
         )}
 

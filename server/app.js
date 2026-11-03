@@ -35,6 +35,7 @@ function createApp() {
         }
         callback(new Error("Origin is not allowed by CORS"));
       },
+      exposedHeaders: ["Content-Disposition"],
     }),
   );
   app.use(express.json({ limit: "2mb" })); // generous for Phase 1 text content; file uploads use multipart, not this limit

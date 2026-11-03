@@ -118,6 +118,36 @@ export const api = {
       body: { textContent },
       auth: false,
     }),
+  embedMediaProof: async (contentType, file, txHash) => {
+    const form = new FormData();
+    form.append("contentType", contentType);
+    form.append("txHash", txHash);
+    form.append("file", file);
+
+    const res = await fetch(`${API_BASE}/assets/hidden-proof/embed-media`, {
+      method: "POST",
+      body: form,
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || `Request failed with status ${res.status}`);
+    }
+
+    const disposition = res.headers.get("Content-Disposition") || "";
+    const filename = disposition.match(/filename="([^"]+)"/i)?.[1] || file.name;
+    return { blob: await res.blob(), filename };
+  },
+  extractMediaProof: (contentType, file) => {
+    const form = new FormData();
+    form.append("contentType", contentType);
+    form.append("file", file);
+    return request("/assets/hidden-proof/extract-media", {
+      method: "POST",
+      body: form,
+      isFormData: true,
+      auth: false,
+    });
+  },
   listMyAssets: () => request("/assets"),
   getAsset: (assetId) => request(`/assets/${assetId}`, { auth: false }),
   transferAsset: (assetId, toWallet, txHash) =>
@@ -127,10 +157,6 @@ export const api = {
     }),
   publicVerify: (assetId) =>
     request(`/public/verify/${assetId}`, { auth: false }),
-  publicSearch: (query) =>
-    request(`/public/search?query=${encodeURIComponent(query)}`, {
-      auth: false,
-    }),
 
   getMyProfile: () => request("/profiles/me"),
   updateMyProfile: (displayName, bio) =>

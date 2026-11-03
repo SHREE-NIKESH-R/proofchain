@@ -12,6 +12,8 @@ const {
   checkFileSimilarity,
   embedHiddenProof,
   extractHiddenProof,
+  embedMediaHiddenProof,
+  extractMediaHiddenProof,
   recordTransfer,
   listMyAssets,
   getAssetById,
@@ -47,6 +49,16 @@ router.post(
 ); // public — same, for files
 router.post("/hidden-proof/embed", embedHiddenProof); // public — text steganography proof embedding
 router.post("/hidden-proof/extract", extractHiddenProof); // public — recover zero-width proof hash
+router.post(
+  "/hidden-proof/embed-media",
+  upload.single("file"),
+  embedMediaHiddenProof,
+);
+router.post(
+  "/hidden-proof/extract-media",
+  upload.single("file"),
+  extractMediaHiddenProof,
+);
 router.post("/:assetId/transfer", requireAuth, recordTransfer);
 router.get("/", requireAuth, listMyAssets);
 router.get("/:assetId", getAssetById); // owner-agnostic detail read; UI decides what to show

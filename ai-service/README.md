@@ -77,7 +77,24 @@ instruction in the spec.
 - `POST /analyze/image` — multipart: `assetId`, `file` → `OriginalityResult`
 - `POST /analyze/audio` — multipart: `assetId`, `file` → `OriginalityResult`
 - `POST /analyze/video` — multipart: `assetId`, `file` → `OriginalityResult`
+- `POST /watermark/embed` — multipart: `contentType`, `txHash`, `file` → watermarked image or MP3
+- `POST /watermark/extract` — multipart: `contentType`, `file` → recovered transaction hash, if present
 - `GET /health`
 
 Every response follows the same shape (spec Section 27): `similarityScore`, `matchedAssets`,
 `analysisMethod`, `confidence`, `warning`.
+
+## Media proof watermark
+
+The watermark service embeds a ProofChain transaction hash in the media signal using
+Haar DWT plus block DCT for JPEG/PNG/WebP images, and Haar DWT plus frame DCT for MP3
+audio. The payload is repeated and Reed-Solomon error-corrected. The Node backend also
+writes an EXIF `UserComment` or MP3 ID3 comment as a second, convenient extraction path.
+Extraction checks metadata first, then the transform-domain watermark, so metadata
+removal alone does not remove the proof identifier.
+
+Transform watermarking needs enough capacity for repeated payloads: images smaller
+than roughly 512×512 pixels and very short MP3 clips may be rejected. Heavy cropping,
+resizing, filtering, or lossy re-encoding can still damage a watermark. The recovered
+hash is an identifier only; clients should independently verify the transaction on the
+blockchain. Video watermark embedding is not implemented.

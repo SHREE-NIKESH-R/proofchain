@@ -363,6 +363,16 @@ a {
     position: relative;
 }
 
+.verify-page {
+    max-width: 1000px;
+}
+
+.hidden-proof-textarea {
+    width: 100%;
+    min-height: 9rem;
+    resize: vertical;
+}
+
 
 /* ---------- Cards ---------- */
 

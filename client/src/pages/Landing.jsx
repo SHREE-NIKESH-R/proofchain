@@ -134,8 +134,8 @@ export default function Landing() {
             Anyone can verify a registered asset's ownership proof — no account
             required.
           </p>
-          <Link to="/explorer" className="btn-primary">
-            Open public explorer
+          <Link to="/verify" className="btn-primary">
+            Verify an asset
           </Link>
         </ScrollReveal>
       </section>

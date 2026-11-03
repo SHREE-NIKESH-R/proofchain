@@ -16,6 +16,8 @@ sentence-transformers==3.0.1
 #   pip install torch --index-url https://download.pytorch.org/whl/cpu
 #   pip install -r requirements.txt
 numpy>=1.26
+scipy>=1.13,<2
+reedsolo==1.7.0
 
 # Image: perceptual hashing + lightweight embeddings
 Pillow==12.3.0

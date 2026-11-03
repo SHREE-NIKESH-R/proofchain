@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.routes.analyze import router as analyze_router
+from app.routes.watermark import router as watermark_router
 
 app = FastAPI(
     title="ProofChain Originality Engine",
@@ -11,6 +12,7 @@ app = FastAPI(
 )
 
 app.include_router(analyze_router)
+app.include_router(watermark_router)
 
 
 @app.get("/health")
